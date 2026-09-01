@@ -1,34 +1,26 @@
 class Solution {
 public:
     int maxSubarraySumCircular(vector<int>& nums) {
-
         int totalSum = 0;
+        int currMax = 0, maxSum = nums[0];
+        int currMin = 0, minSum = nums[0];
 
-        int currMax = 0;
-        int maxSum = nums[0];
+        for (int x : nums) {
+            totalSum += x;
 
-        int currMin = 0;
-        int minSum = nums[0];
-
-        for (int num : nums) {
-
-            // Total array sum
-            totalSum += num;
-
-            // Maximum subarray sum
-            currMax = max(num, currMax + num);
+            // Kadane's for max subarray
+            currMax = max(x, currMax + x);
             maxSum = max(maxSum, currMax);
 
-            // Minimum subarray sum
-            currMin = min(num, currMin + num);
+            // Kadane's for min subarray
+            currMin = min(x, currMin + x);
             minSum = min(minSum, currMin);
         }
 
-        // If all elements are negative
+        // If all elements are negative, totalSum == minSum, so return maxSum
         if (maxSum < 0)
             return maxSum;
 
-        // Maximum of normal and circular subarray
         return max(maxSum, totalSum - minSum);
     }
 };
